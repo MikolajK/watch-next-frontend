@@ -1,0 +1,40 @@
+<div class="create-list-container content box">
+  <div class="notification is-danger" *ngIf="displayFailureNotification">
+    <button class="delete" (click)="onFailureNotificationClose()"></button>
+      Failed to create the list. Please try again.
+  </div>
+  <div class="notification is-success" *ngIf="displaySuccessNotification">
+    <button class="delete" (click)="onSuccessNotificationClose()"></button>
+      List created. Click <a href="/list/{{listId}}">here</a> to see it or <a href="/search">here</a> to find something to watch.
+  </div>
+  <p class="title is-2">Create a list</p>
+  <p>
+    Just give your list a descriptive name and you're good to go.
+    <br />
+    Once the list is created you'll be able to:
+  </p>
+  <ul>
+    <li>Add new films and series to the list</li>
+    <li>Add people to the list by using their email address</li>
+    <li>Vote on what to watch next</li>
+    <li>Rate what you have already seen</li>
+  </ul>
+
+  <form autocomplete="off" [formGroup]="createListFormGroup" (ngSubmit)="onSubmit()">
+    <div class="field name-field">
+      <div class="label">Name</div>
+      <input class="input is-rounded form-control" required maxlength="64" id="listName" name="listName" formControlName="listName"/>
+      <div class="help is-danger" *ngIf="listName && listName.invalid && (listName.dirty || listName.touched)">
+        <div class="missing-name" *ngIf="listName && listName.errors?.required">
+          Name is required.
+        </div>
+      </div>
+    </div>
+
+    <button [disabled]="!submitButtonEnabled || !createListFormGroup.valid" class="button is-rounded create-list-button" type="submit">
+      Create
+    </button>
+
+
+  </form>
+</div>

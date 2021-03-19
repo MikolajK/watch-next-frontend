@@ -1,16 +1,17 @@
-import { WatchableService } from './core/services/watchable/watchable.service';
+import { SimpleWatchableListRepresentation } from './core/models/list';
+import { Component } from '@angular/core';
 import {
-  WatchableSearchRepresentation,
+  SimpleWatchableRepresentation,
   WatchableSearchResponse,
 } from './core/models/watchables';
-import { Component } from '@angular/core';
+import { WatchableService } from './core/services/watchable/watchable.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass'],
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  watchables: WatchableSearchRepresentation[];
+  watchables: SimpleWatchableRepresentation[];
 
   constructor(private watchableService: WatchableService) {
     this.watchables = [];

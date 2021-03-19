@@ -1,0 +1,25 @@
+<nav class="navbar">
+  <div class="navbar-menu has-text-weight-semibold">
+    <div class="navbar-brand">
+        <img src="assets/img/logo.png" class="navbar-item" width="80%" height="80%">
+    </div>
+    <div class="navbar-start">
+      <a class="navbar-item" href="/search">Search</a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">Lists</a>
+
+        <div class="navbar-dropdown">
+          <ng-container *ngFor="let list of userLists">
+            <a class="navbar-item" href="/list/{{ list.id }}">{{
+              list.name
+            }}</a>
+          </ng-container>
+
+          <hr class="navbar-divider" />
+          <a class="navbar-item" href="/list/create">Create a list</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

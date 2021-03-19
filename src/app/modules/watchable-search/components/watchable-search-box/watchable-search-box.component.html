@@ -1,1 +1,7 @@
-<input type="text" [formControl]="searchBoxFormControl">
+<div class="search-box box">
+  <p class="has-text-centered has-text-weight-semi-bold">Start typing to search for films and series.
+  The search will only work if you use full words in your search query.
+  </p>
+  <hr>
+  <input class="input" type="text" placeholder="Search..." [formControl]="searchBoxFormControl" />
+</div>

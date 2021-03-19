@@ -1,0 +1,28 @@
+.poster {
+  width: 80px;
+}
+
+.title {
+  align-items: center;
+}
+
+.search-result {
+  display: flex;
+  flex-direction: column;
+  border: #FF93D8 solid 1px;
+}
+
+.button {
+  margin-right: 10px;
+}
+
+.box {
+  border: #FF93D8 solid 1px;
+}
+
+.list-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,20 +1,26 @@
+import { WatchablesListModule } from './modules/watchables-list/watchables-list.module';
+import { CreateWatchablesListModule } from './modules/create-watchables-list/create-watchables-list.module';
+import { WatchableSearchModule } from './modules/watchable-search/watchable-search.module';
+import { WatchNextNavigationModule } from './modules/watch-next-navigation/watch-next-navigation.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { WatchableSearchBoxComponent } from './modules/watchable-search/components/watchable-search-box/watchable-search-box.component';
-import { WatchableSearchResultsComponent } from './modules/watchable-search/components/watchable-search-results/watchable-search-results.component';
+
+const watchNextModules = [
+  WatchNextNavigationModule,
+  WatchableSearchModule,
+  CreateWatchablesListModule,
+  WatchablesListModule
+];
+
+const angularModules = [BrowserModule, HttpClientModule];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    WatchableSearchBoxComponent,
-    WatchableSearchResultsComponent,
-  ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, ReactiveFormsModule],
+  declarations: [AppComponent],
+  imports: [AppRoutingModule, ...angularModules, ...watchNextModules],
+  exports: [AppComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
