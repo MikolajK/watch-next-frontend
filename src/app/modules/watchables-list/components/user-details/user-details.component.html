@@ -1,0 +1,25 @@
+<div class="content" *ngIf="users.length">
+  <p>Users with access to the list:</p>
+
+  <div class="user-container" *ngFor="let user of users">
+    <i class="icon gg-profile"></i>
+    <span class="user">
+       {{ user }}
+
+    </span>
+    <button class="remove-user-button button is-danger is-outlined is-small">
+      Remove User
+    </button>
+
+
+  </div>
+  <div class="media">
+    <div class="user-controls media-left">
+      <button class="button is-primary is-outlined">Invite User</button>
+    </div>
+    <div class="media-content"></div>
+    <div class="media-right">
+      <button class="button is-danger is-outlined">Delete List</button>
+    </div>
+  </div>
+</div>

@@ -25,30 +25,26 @@
       <div *ngIf="watchable.userVotes.length"></div>
     </div>
     <div class="media-right">
-      <p>
-        People who want to watch this:
-      </p>
+      <p>People who want to watch this:</p>
       <div class="vote-list">
-      <p class="no-votes-text" *ngIf="!watchable.userVotes.length">
-        Nobody voted for this yet.
-      </p>
-      <p class="vote" *ngFor="let vote of watchable.userVotes">
-       <i class="icon gg-profile"></i> {{vote.user.name}}: {{vote.votes}}
-      </p>
-      <p class="vote" *ngFor="let vote of watchable.userVotes">
-        <i class="icon gg-profile"></i> {{vote.user.name}}: {{vote.votes}}
-       </p>
+        <p class="no-votes-text" *ngIf="!watchable.userVotes.length">
+          Nobody voted for this yet.
+        </p>
+        <p class="vote" *ngFor="let vote of watchable.userVotes">
+          <i class="icon gg-profile"></i> {{ vote.user.name }}: {{ vote.votes }}
+        </p>
       </div>
-      <p class="total-votes">
+      <p class="total-votes" *ngIf="watchable.userVotes.length">
         Total: {{ getTotal(watchable.userVotes) }}
       </p>
+      <div class="watchable-buttons">
+        <button class="vote-button button is-primary is-outlined">Vote</button>
+        <button class="remove-from-list-button button is-danger is-outlined">Remove from list</button>
+      </div>
     </div>
   </article>
 </div>
 
 <ng-template #noVotes>
-  <p>
-    Nobody indicated they want to watch it yet.
-  </p>
+  <p>Nobody indicated they want to watch it yet.</p>
 </ng-template>
-

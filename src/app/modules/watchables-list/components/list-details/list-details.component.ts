@@ -23,8 +23,12 @@ export class ListDetailsComponent {
   }
 
   getTotal(watchableVotes: UserVoteRepresentation[]) {
+    if (watchableVotes.length) {
     return watchableVotes
       .map((vote) => vote.votes)
       .reduce((previous, current) => previous + current);
+    } else {
+      return [];
+    }
   }
 }

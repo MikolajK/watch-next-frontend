@@ -1,0 +1,13 @@
+.user-container {
+  display: grid;
+  grid-template-columns: 3% 20% 10% 65%;
+  margin-bottom: 15px;
+}
+
+.gg-profile {
+  margin-right: 10px;
+}
+
+.button {
+  margin-right: 10px
+}
