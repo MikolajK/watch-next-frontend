@@ -38,8 +38,16 @@
         Total: {{ getTotal(watchable.userVotes) }}
       </p>
       <div class="watchable-buttons">
-        <button class="vote-button button is-primary is-outlined">Vote</button>
-        <button class="remove-from-list-button button is-danger is-outlined">Remove from list</button>
+        <button
+          class="vote-button button is-primary is-outlined"
+          (click)="vote(watchable)"
+          [disabled]="!votingEnabled"
+        >
+          Vote
+        </button>
+        <button class="remove-from-list-button button is-danger is-outlined">
+          Remove from list
+        </button>
       </div>
     </div>
   </article>

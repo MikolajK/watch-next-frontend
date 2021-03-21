@@ -1,21 +1,23 @@
-import { DetailedWatchableListRepresentation, SimpleWatchableListRepresentation } from './../../models/list';
+import { UserProfileRepresentation } from './../../models/user';
+import {
+  DetailedWatchableListRepresentation,
+  SimpleWatchableListRepresentation,
+} from './../../models/list';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { WatchableSearchResponse } from '../../models/watchables';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WatchableService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public search(query: string, page = 1) {
     return this.http.post<WatchableSearchResponse>(
-      `http://localhost:8080/watchable/search?query=${query}&page=${page}`,
+      `${environment.baseUrl}/watchable/search?query=${query}&page=${page}`,
       null
     );
   }
@@ -24,7 +26,7 @@ export class WatchableService {
     name: string
   ): Observable<SimpleWatchableListRepresentation> {
     return this.http.post<SimpleWatchableListRepresentation>(
-      'http://localhost:8080/watchable/list',
+      `${environment.baseUrl}/watchable/list`,
       {
         name: name,
       }
@@ -32,17 +34,42 @@ export class WatchableService {
   }
 
   public getLists(): Observable<SimpleWatchableListRepresentation[]> {
-      return this.http
-      .get<SimpleWatchableListRepresentation[]>(
-        'http://localhost:8080/watchable/list'
-      )
+    return this.http.get<SimpleWatchableListRepresentation[]>(
+      `${environment.baseUrl}/watchable/list`
+    );
   }
 
   public getList(id: number): Observable<DetailedWatchableListRepresentation> {
-    return this.http.get<DetailedWatchableListRepresentation>(`http://localhost:8080/watchable/list/${id}`)
+    return this.http.get<DetailedWatchableListRepresentation>(
+      `${environment.baseUrl}/watchable/list/${id}`
+    );
   }
 
   public addToList(listId: number, watchableId: string): Observable<void> {
-    return this.http.post<void>(`http://localhost:8080/watchable/list/${listId}/watchable`, {imdbIds: [watchableId]})
+    return this.http.post<void>(
+      `${environment.baseUrl}/watchable/list/${listId}/watchable`,
+      { imdbIds: [watchableId] }
+    );
+  }
+
+  getUsers(listId: number) {
+    return this.http.get<UserProfileRepresentation[]>(
+      `${environment.baseUrl}/watchable/list/${listId}/user`
+    );
+  }
+
+  vote(listId: number, imdbId: string, votes: number) {
+    return this.http.put<void>(
+      `${environment.baseUrl}/watchable/list/${listId}/watchable/${imdbId}/vote`,
+      { votes: votes }
+    );
+  }
+
+  assignUser(listId: number, userId: string) {
+    return this.http.post<void>(`${environment.baseUrl}/watchable/list/${listId}/user`, {username: userId})
+  }
+
+  unassignUser(listId: number, userId: string) {
+    return this.http.delete<void>(`${environment.baseUrl}/watchable/list/${listId}/user/${userId}`)
   }
 }

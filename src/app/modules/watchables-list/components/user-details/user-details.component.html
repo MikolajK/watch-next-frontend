@@ -4,18 +4,43 @@
   <div class="user-container" *ngFor="let user of users">
     <i class="icon gg-profile"></i>
     <span class="user">
-       {{ user }}
-
+      {{ user.name }}
     </span>
-    <button class="remove-user-button button is-danger is-outlined is-small">
+    <button
+      class="remove-user-button button is-danger is-outlined is-small"
+      [disabled]="removeUserButtonDisabled"
+      (click)="deleteUser(user.name)"
+    >
       Remove User
     </button>
-
-
   </div>
   <div class="media">
     <div class="user-controls media-left">
-      <button class="button is-primary is-outlined">Invite User</button>
+      <form [formGroup]="addUserFormGroup">
+        <input
+          class="username-input input is-rounded"
+          required
+          formControlName="username"
+          autocomplete="off"
+        />
+        <button
+          type="submit"
+          class="button is-primary is-outlined"
+          [disabled]="
+            addUserButtonDisabled ||
+            (addUserFormGroup.touched && addUserFormGroup.invalid)
+          "
+          (click)="addUser()"
+        >
+          Invite User
+        </button>
+        <p
+          *ngIf="addUserFormGroup.touched && addUserFormGroup.invalid"
+          class="help is-danger"
+        >
+          Username is required.
+        </p>
+      </form>
     </div>
     <div class="media-content"></div>
     <div class="media-right">

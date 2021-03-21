@@ -4,6 +4,7 @@ import { WatchableSearchComponent } from './modules/watchable-search/watchable-s
 import { CreateWatchablesListComponent } from './modules/create-watchables-list/create-watchables-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthenticationService } from './core/services/user/authentication.service';
 
 const routes: Routes = [
   {
@@ -16,8 +17,8 @@ const routes: Routes = [
   },
   {
     path: 'list/:id',
-    component: WatchablesListComponent
-  }
+    component: WatchablesListComponent,
+  },
 ];
 
 @NgModule({

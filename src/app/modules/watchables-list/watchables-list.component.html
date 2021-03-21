@@ -1,10 +1,19 @@
 <div class="title-box box">
   <div class="title">
-    {{list?.name}}
+    {{ list?.name }}
   </div>
 
-  <user-details [users]="users"></user-details>
-
+  <user-details
+    [users]="users"
+    [removeUserButtonDisabled]="removeUserButtonDisabled"
+    (onRemoveUser)="removeUser($event)"
+    [addUserButtonDisabled]="addUserButtonDisabled"
+    (onAddUser)="addUser($event)"
+  ></user-details>
 </div>
 
-<list-details [watchables]="list?.watchables"></list-details>
+<list-details
+  [watchables]="list?.watchables || []"
+  (onVote)="handleVote($event)"
+  [votingEnabledSubject]="votingEnabled"
+></list-details>

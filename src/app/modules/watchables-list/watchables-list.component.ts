@@ -1,7 +1,11 @@
+import { DetailedWatchableListRepresentation } from './../../core/models/list';
+import { UserProfileRepresentation } from './../../core/models/user';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DetailedWatchableListRepresentation } from 'src/app/core/models/list';
 import { WatchableService } from 'src/app/core/services/watchable/watchable.service';
+import { BehaviorSubject } from 'rxjs';
+import { AuthenticationService } from 'src/app/core/services/user/authentication.service';
+import { DetailedWatchableRepresentation } from 'src/app/core/models/watchables';
 
 @Component({
   selector: 'app-watchables-list',
@@ -9,42 +13,77 @@ import { WatchableService } from 'src/app/core/services/watchable/watchable.serv
   styleUrls: ['./watchables-list.component.css'],
 })
 export class WatchablesListComponent implements OnInit {
+  users: UserProfileRepresentation[];
+  votingEnabled: BehaviorSubject<boolean>;
+  listId: number;
   list: DetailedWatchableListRepresentation | undefined;
-  users: string[];
+  removeUserButtonDisabled: boolean;
+  addUserButtonDisabled: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private watchableService: WatchableService
+    private watchableService: WatchableService,
+    private userService: AuthenticationService
   ) {
     this.users = [];
-    let listIdValue = activatedRoute.snapshot.paramMap.get('id') || undefined;
-    if (!listIdValue) {
-      throw new Error('List ID incorrect: ' + listIdValue);
-    }
-    this.watchableService.getList(Number.parseInt(listIdValue)).subscribe(
+    this.listId = Number.parseInt(
+      activatedRoute.snapshot.paramMap.get('id') || ''
+    );
+    this.votingEnabled = new BehaviorSubject<boolean>(true);
+    this.removeUserButtonDisabled = false;
+    this.addUserButtonDisabled = false;
+  }
+
+  refreshList() {
+    this.watchableService.getList(this.listId).subscribe(
       (data) => {
         this.list = data;
-        data.watchables.forEach((watchable) => {
-          watchable.userVotes.forEach((userVote) => {
-            if (this.users.indexOf(userVote.user.name) < 0) {
-              this.users.push(userVote.user.name);
-            }
-          });
-        });
       },
       (error) => {
         throw new Error(error);
       }
     );
+
+    this.watchableService
+    .getUsers(this.listId)
+    .subscribe((users) => (this.users = users));
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.refreshList();
+  }
 
-  get listDetails() {
-    if (!this.list) {
-      throw new Error('');
-    }
+  handleVote(watchable: DetailedWatchableRepresentation) {
+    this.votingEnabled.next(false);
+    let userName = this.userService.getCurrentUser();
+    console.log(userName);
+    let currentVotes =
+      watchable.userVotes.find((vote) => vote.user.name === userName)?.votes ||
+      0;
+    this.watchableService
+      .vote(this.listId, watchable.imdbId, currentVotes + 1)
+      .subscribe(
+        () => this.votingEnabled.next(true),
+        (error) => {
+          throw new Error(error);
+        },
+        () => this.refreshList()
+      );
+  }
 
-    return this.list;
+  removeUser(userId: string) {
+    this.removeUserButtonDisabled = true;
+    this.watchableService.unassignUser(this.listId, userId).subscribe(() => {
+      this.removeUserButtonDisabled = false;
+      this.refreshList();
+    });
+  }
+
+  addUser(userId: string) {
+    this.addUserButtonDisabled = true;
+    this.watchableService.assignUser(this.listId, userId).subscribe(() => {
+      this.addUserButtonDisabled = false;
+      this.refreshList();
+    })
   }
 }

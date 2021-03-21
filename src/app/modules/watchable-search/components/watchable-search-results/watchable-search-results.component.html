@@ -41,10 +41,14 @@
   <div class="modal-background" (click)="closeListsModal()"></div>
   <div class="modal-content">
     <div class="box list-buttons">
-    <div class="content" *ngFor="let list of userLists">
+    <div class="content">
+      <p class="title">
+        Choose a list
+      </p>
       <button
         class="button is-outlined is-success"
         (click)="addToList(list.id, modalImdbId)"
+        *ngFor="let list of userLists"
       >
         {{ list.name }}
       </button>
